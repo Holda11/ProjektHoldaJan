@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<polozky>
+	<polozka>
+		<id>1</id>
+		<nazev>Jablko</nazev>
+		<cena>10</cena>
+	</polozka>
+	<polozka>
+		<id>2</id>
+		<nazev>Maslo</nazev>
+		<cena>50</cena>
+	</polozka>
+	<polozka>
+		<id>3</id>
+		<nazev>Dratenka</nazev>
+		<cena>30</cena>
+	</polozka>
+</polozky>
