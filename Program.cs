@@ -9,23 +9,34 @@ namespace ProjektHoldaJan
     class Program
     {
         //static List<object> kosik = new List<object>();
+        
       
         static void Main(string[] args)
         {
-            while(true)
+            Jablko jablko = new Jablko();
+            Maslo maslo = new Maslo();
+            Kureci kureci = new Kureci();
+            Mydlo mydlo = new Mydlo();
+            Kartacek kartacek = new Kartacek();
+
+
+            while (true)
             {
-                Console.Clear();
+                
                 StartMenu();
                 string volba = Console.ReadLine() ?? "";
                 switch(volba)
                 {
                     case "a":
                         Console.Clear();
-                        Nakup();
+                        Nakup(jablko, maslo, kureci, mydlo, kartacek);
                         break;
                     case "s":
-                        Console.Clear();
-                        Console.WriteLine("s");
+                        Console.WriteLine(jablko.mnozstvi);
+                        Console.WriteLine(maslo.mnozstvi);
+                        Console.WriteLine(kureci.mnozstvi);
+                        Console.WriteLine(mydlo.mnozstvi);
+                        Console.WriteLine(kartacek.mnozstvi);
                         break;
                     case "d":
                         Console.WriteLine("d");
@@ -57,8 +68,8 @@ namespace ProjektHoldaJan
             Console.WriteLine("Výtejte v Menu, vyberte jednu z možností:");
             Console.WriteLine();
             Console.WriteLine("[a]: Nákup");
-            Console.WriteLine("[b]: Košík");
-            Console.WriteLine("[c]: Účtenka");
+            Console.WriteLine("[s]: Košík");
+            Console.WriteLine("[d]: Účtenka");
             Console.WriteLine();
             Console.WriteLine("[0]: Navrácení do Menu");
             for (int i = 0; i < 50; i++)
@@ -140,11 +151,13 @@ namespace ProjektHoldaJan
         /********************************************************/
         /********************************************************/
         //NAKUP() = Metoda pro Nakupování
-        static void Nakup()
+        static void Nakup(Jablko jablko, Maslo maslo, Kureci kureci, Mydlo mydlo, Kartacek kartacek)
         {
+
             Soubor();
             while(true)
             {
+                int pocet;
                 int vyber;
                 if(!int.TryParse(Console.ReadLine(), out vyber))
                 {
@@ -153,18 +166,100 @@ namespace ProjektHoldaJan
                 }
                 switch(vyber)
                 {
+                    //Jablko
                     case 1:
-                        Console.WriteLine("Tada");
-                        Jablko j = new Jablko();
-                        
+                        if (!int.TryParse(Console.ReadLine(), out pocet))
+                        {
+                            Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                            continue;
+                        }
+                        if (jablko.mnozstvi == 0)
+                        {
+                            Console.WriteLine("Zadali jste množství Jablek");
+                            jablko.mnozstvi = pocet;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Přičetli jste Jablka");
+                            Console.WriteLine("Zadejte ");
+                            jablko.mnozstvi = jablko.mnozstvi + pocet;
+                        }
                         break;
+                    //Maslo
                     case 2:
+                        if (!int.TryParse(Console.ReadLine(), out pocet))
+                        {
+                            Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                            continue;
+                        }
+                        if (maslo.mnozstvi == 0)
+                        {
+                            Console.WriteLine("Zadali jste množství Másla");
+                            maslo.mnozstvi = pocet;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Přičetli jste Másla");
+                            Console.WriteLine("Zadejte ");
+                            maslo.mnozstvi = maslo.mnozstvi + pocet;
+                        }
                         break;
+                    //Kuřecí prsa
                     case 3:
+                        if (!int.TryParse(Console.ReadLine(), out pocet))
+                        {
+                            Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                            continue;
+                        }
+                        if (kureci.mnozstvi == 0)
+                        {
+                            Console.WriteLine("Zadali jste množství Kuřecích Prsou");
+                            kureci.mnozstvi = pocet;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Přičetli jste Kuřecí Prsa");
+                            Console.WriteLine("Zadejte ");
+                            kureci.mnozstvi = kureci.mnozstvi + pocet;
+                        }
                         break;
+                    //Mydlo
                     case 4:
+                        if (!int.TryParse(Console.ReadLine(), out pocet))
+                        {
+                            Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                            continue;
+                        }
+                        if (mydlo.mnozstvi == 0)
+                        {
+                            Console.WriteLine("Zadali jste množství Jablek");
+                            mydlo.mnozstvi = pocet;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Přičetli jste Jablka");
+                            Console.WriteLine("Zadejte ");
+                            mydlo.mnozstvi = mydlo.mnozstvi + pocet;
+                        }
                         break;
+                    //Kartacek
                     case 5:
+                        if (!int.TryParse(Console.ReadLine(), out pocet))
+                        {
+                            Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                            continue;
+                        }
+                        if (kartacek.mnozstvi == 0)
+                        {
+                            Console.WriteLine("Zadali jste množství Kartácků");
+                            kartacek.mnozstvi = pocet;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Přičetli jste Kartácků");
+                            Console.WriteLine("Zadejte ");
+                            kartacek.mnozstvi = kartacek.mnozstvi + pocet;
+                        }
                         break;
                     case 0:
                         return;
