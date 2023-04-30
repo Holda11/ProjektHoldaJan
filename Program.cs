@@ -1,16 +1,13 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
+using System;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
+
 
 namespace ProjektHoldaJan
 {
     class Program
     {
-        //static List<object> kosik = new List<object>();
-        
-      
+
         static void Main(string[] args)
         {
             Jablko jablko = new Jablko();
@@ -22,7 +19,7 @@ namespace ProjektHoldaJan
 
             while (true)
             {
-                
+                Console.Clear();
                 StartMenu();
                 string volba = Console.ReadLine() ?? "";
                 switch(volba)
@@ -32,14 +29,28 @@ namespace ProjektHoldaJan
                         Nakup(jablko, maslo, kureci, mydlo, kartacek);
                         break;
                     case "s":
-                        Console.WriteLine(jablko.mnozstvi);
-                        Console.WriteLine(maslo.mnozstvi);
-                        Console.WriteLine(kureci.mnozstvi);
-                        Console.WriteLine(mydlo.mnozstvi);
-                        Console.WriteLine(kartacek.mnozstvi);
+                        Console.Clear();
+                        for (int i = 0; i < 50; i++)
+                        {
+                            Console.Write('*');
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Máte v Košíku:");
+                        Console.WriteLine("Jablka:" + jablko.mnozstvi + "  " + "CENA:" + jablko.mnozstvi * jablko.cena + "Kč");
+                        Console.WriteLine("Maslo:" + maslo.mnozstvi + "  " + "CENA:" + maslo.mnozstvi * maslo.cena + "Kč");
+                        Console.WriteLine("Kureří prsa:" + kureci.mnozstvi + "  " + "CENA:" + kureci.mnozstvi * kureci.cena + "Kč");
+                        Console.WriteLine("Mýdla:" + mydlo.mnozstvi + "  " + "CENA:" + mydlo.mnozstvi * mydlo.cena + "Kč");
+                        Console.WriteLine("Kartáčky:" + kartacek.mnozstvi + "  " + "CENA:" + kartacek.mnozstvi*kartacek.cena + "Kč");
+                        for (int i = 0; i < 50; i++)
+                        {
+                            Console.Write('*');
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Zadejte cokoliv pro ukončení košíku....");
+                        Console.ReadKey();
                         break;
                     case "d":
-                        Console.WriteLine("d");
+                        Tisk(jablko, maslo, kureci, mydlo, kartacek);
                         break;
                     case "0":
                         Console.WriteLine("");
@@ -80,9 +91,10 @@ namespace ProjektHoldaJan
         }
         /********************************************************/
         /********************************************************/
-        ///Vytvoření/Přečtení souboru
+        ///Vytvoření/Přečtení XML souboru
         static void Soubor()
         {
+            //Vytvoření XML Souboru
             XmlWriterSettings set = new XmlWriterSettings();
             set.Indent = true;
             using (XmlWriter xw = XmlWriter.Create(@"soubor.xml", set))
@@ -118,6 +130,7 @@ namespace ProjektHoldaJan
                 xw.Flush();
 
             }
+            //Čtení ze souboru
             using (XmlReader xr = XmlReader.Create(@"soubor.xml"))
             {
                 for (int i = 0; i < 50; i++)
@@ -134,7 +147,7 @@ namespace ProjektHoldaJan
                         {
                             Console.Write("[" + xr.GetAttribute("id") + "]" + " ");
                             Console.Write(xr.GetAttribute("name") + " ");
-                            Console.Write(xr.GetAttribute("cena") + " ");
+                            Console.Write(xr.GetAttribute("cena") + "Kč");
                             Console.WriteLine();
                         }
                     }
@@ -150,13 +163,16 @@ namespace ProjektHoldaJan
         }
         /********************************************************/
         /********************************************************/
-        //NAKUP() = Metoda pro Nakupování
+        //NAKUP() = Metoda pro Nakupování, metoda má argumenty položek
         static void Nakup(Jablko jablko, Maslo maslo, Kureci kureci, Mydlo mydlo, Kartacek kartacek)
         {
 
             Soubor();
             while(true)
             {
+                //Int(y) pro vstupy
+                //vyber == vstup pro volbu menu
+                //pocet == vstup pro navolení množství
                 int pocet;
                 int vyber;
                 if(!int.TryParse(Console.ReadLine(), out vyber))
@@ -168,6 +184,7 @@ namespace ProjektHoldaJan
                 {
                     //Jablko
                     case 1:
+                        Console.WriteLine("Zadejte množství:");
                         if (!int.TryParse(Console.ReadLine(), out pocet))
                         {
                             Console.WriteLine("Neplatný vstup, Zadejte číslo.");
@@ -187,6 +204,7 @@ namespace ProjektHoldaJan
                         break;
                     //Maslo
                     case 2:
+                        Console.WriteLine("Zadejte množství:");
                         if (!int.TryParse(Console.ReadLine(), out pocet))
                         {
                             Console.WriteLine("Neplatný vstup, Zadejte číslo.");
@@ -206,6 +224,7 @@ namespace ProjektHoldaJan
                         break;
                     //Kuřecí prsa
                     case 3:
+                        Console.WriteLine("Zadejte množství:");
                         if (!int.TryParse(Console.ReadLine(), out pocet))
                         {
                             Console.WriteLine("Neplatný vstup, Zadejte číslo.");
@@ -225,6 +244,7 @@ namespace ProjektHoldaJan
                         break;
                     //Mydlo
                     case 4:
+                        Console.WriteLine("Zadejte množství:");
                         if (!int.TryParse(Console.ReadLine(), out pocet))
                         {
                             Console.WriteLine("Neplatný vstup, Zadejte číslo.");
@@ -244,6 +264,7 @@ namespace ProjektHoldaJan
                         break;
                     //Kartacek
                     case 5:
+                        Console.WriteLine("Zadejte množství:");
                         if (!int.TryParse(Console.ReadLine(), out pocet))
                         {
                             Console.WriteLine("Neplatný vstup, Zadejte číslo.");
@@ -270,9 +291,133 @@ namespace ProjektHoldaJan
                 }
             }
         }
-
+        /********************************************************/
+        /********************************************************/
+        //Tisk() = Metoda pro Tisk účtenky
+        static void Tisk(Jablko jablko, Maslo maslo, Kureci kureci, Mydlo mydlo, Kartacek kartacek)
+        {
+            Console.Clear();
+            for (int i = 0; i < 50; i++)
+            {
+                Console.Write('*');
+            }
+            Console.WriteLine();
+            Console.WriteLine("Výtejte u tisku účtenky");
+            Console.WriteLine("[7] = Tisk Účtenky");
+            Console.WriteLine("[8] = Navrácení do Menu");
+            for (int i = 0; i < 50; i++)
+            {
+                Console.Write('*');
+            }
+            Console.WriteLine();
+            while (true)
+            {
+                
+                int tisk;
+                if (!int.TryParse(Console.ReadLine(), out tisk))
+                {
+                    Console.WriteLine("Neplatný vstup, Zadejte číslo.");
+                    continue;
+                }
+                switch(tisk)
+                {
+                    case 7:
+                        int kontrola = jablko.mnozstvi+maslo.mnozstvi+kureci.mnozstvi+mydlo.mnozstvi+kartacek.mnozstvi;
+                        string path = @"c:/temp/Uctenka.txt";
+                        if(kontrola > 0)
+                        {
+                        if(!File.Exists(path))
+                        {
+                            using (StreamWriter sw = new StreamWriter(path))
+                            {
+                                for (int i = 0; i < 25; i++)
+                                {
+                                    sw.Write('-');
+                                }
+                                sw.WriteLine();
+                                sw.WriteLine("Účtenka");
+                                sw.WriteLine("Datum:" + DateTime.Now.ToShortDateString());
+                                sw.WriteLine("Obchod: Konzole");
+                                sw.WriteLine("Adresa: Počítač");
+                                sw.WriteLine("Zaplaceno: Dobrou známkou");
+                                for (int i = 0; i < 25; i++)
+                                {
+                                    sw.Write('-');
+                                }
+                                sw.WriteLine();
+                                if(jablko.mnozstvi > 0)
+                                {
+                                    int jc = jablko.mnozstvi * jablko.cena;
+                                    sw.WriteLine("JABLKO - 10Kč: ");
+                                    sw.WriteLine("počet:" + jablko.mnozstvi);
+                                    sw.WriteLine("cena bez dph:" + jc/1.21 + "Kč");
+                                    sw.WriteLine("CENA CELKEM:" + jc + "Kč" );
+                                }
+                                if (maslo.mnozstvi > 0)
+                                {
+                                    int mc = maslo.cena * maslo.mnozstvi;
+                                    sw.WriteLine("MASLO - 10Kč: ");
+                                    sw.WriteLine("počet:" + maslo.mnozstvi);
+                                    sw.WriteLine("cena bez dph:" + mc / 1.21 + "Kč");
+                                    sw.WriteLine("CENA CELKEM:" + mc + "Kč");
+                                }
+                                if (kureci.mnozstvi > 0)
+                                {
+                                    int kc = kureci.cena * kureci.mnozstvi;
+                                    sw.WriteLine("KUŘECÍ PRSA - 10Kč: ");
+                                    sw.WriteLine("počet:" + kureci.mnozstvi);
+                                    sw.WriteLine("cena bez dph:" + kc / 1.21 + "Kč");
+                                    sw.WriteLine("CENA CELKEM:" + kc + "Kč");
+                                }
+                                if (mydlo.mnozstvi > 0)
+                                {
+                                    int myc = mydlo.cena * mydlo.mnozstvi;
+                                    sw.WriteLine("MÝDLO - 10Kč: ");
+                                    sw.WriteLine("počet:" + mydlo.mnozstvi);
+                                    sw.WriteLine("cena bez dph:" + myc / 1.21 + "Kč");
+                                    sw.WriteLine("CENA CELKEM:" + myc + "Kč");
+                                }
+                                if (kartacek.mnozstvi > 0)
+                                {
+                                    int kac = kartacek.cena * kartacek.mnozstvi;
+                                    sw.WriteLine("KARTÁČEK - 10Kč: ");
+                                    sw.WriteLine("počet:" + kartacek.mnozstvi);
+                                    sw.WriteLine("cena bez dph:" + kac / 1.21 + "Kč");
+                                    sw.WriteLine("CENA CELKEM:" + kac + "Kč");
+                                }
+                                    sw.WriteLine();
+                                for (int i = 0; i < 25; i++)
+                                {
+                                    sw.Write('-');
+                                }
+                                sw.WriteLine();
+                                sw.WriteLine("Celkem:" + ((jablko.mnozstvi*jablko.cena) +(maslo.cena*maslo.mnozstvi)+(kureci.cena*kureci.mnozstvi)+(mydlo.cena*mydlo.mnozstvi)+(kartacek.cena*kartacek.mnozstvi)));
+                                for (int i = 0; i < 25; i++)
+                                {
+                                    sw.Write('-');
+                                }
+                                sw.WriteLine();
+                                sw.WriteLine("Děkujeme za nákup");
+                                
+                            }
+                            Console.WriteLine("Účtenka vytisknuta v C://temp");
+                        }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nemáte nic v košíku.....");
+                        }
+                        break;
+                    case 8:
+                        return;
+                }
+            }
+           
+        }
 
     }
+   
 }
+
 
 
