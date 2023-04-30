@@ -10,13 +10,15 @@ namespace ProjektHoldaJan
 
         static void Main(string[] args)
         {
+            //Vytvoření objektů pro každou položku v "nákupu"
             Jablko jablko = new Jablko();
             Maslo maslo = new Maslo();
             Kureci kureci = new Kureci();
             Mydlo mydlo = new Mydlo();
             Kartacek kartacek = new Kartacek();
 
-
+            //Menu
+            //@Uživatel => Zadáva vstup aby si navolil kam chce pokračovat, při použití jiného znaku se napíše chyba a menu se načte znova
             while (true)
             {
                 Console.Clear();
@@ -24,10 +26,14 @@ namespace ProjektHoldaJan
                 string volba = Console.ReadLine() ?? "";
                 switch(volba)
                 {
+                    //Volba 'A'
+                    //@Uživatel => Zde může začít ukládat hodnoty produktů
                     case "a":
                         Console.Clear();
                         Nakup(jablko, maslo, kureci, mydlo, kartacek);
                         break;
+                    //Volba 'S'
+                    //@Uživatel => Zde se uživatel může podívat na to co má v košíku za jakou cenu, zadáním jakýmkoliv znakem může košík opustit
                     case "s":
                         Console.Clear();
                         for (int i = 0; i < 50; i++)
@@ -49,9 +55,13 @@ namespace ProjektHoldaJan
                         Console.WriteLine("Zadejte cokoliv pro ukončení košíku....");
                         Console.ReadKey();
                         break;
+                    //Volba 'D'
+                    //Uživatel => Zde může uživatel vytisknout účtenku v případě, že už něco přidal do košíku
                     case "d":
                         Tisk(jablko, maslo, kureci, mydlo, kartacek);
                         break;
+                    //Volba '0'
+                    //Uživatel => Zde může uživatel opustit program
                     case "0":
                         Console.WriteLine("");
                         return;
@@ -92,6 +102,7 @@ namespace ProjektHoldaJan
         /********************************************************/
         /********************************************************/
         ///Vytvoření/Přečtení XML souboru
+        ///Tato Metoda není v programu zásadní, spíše pro demonstrování
         static void Soubor()
         {
             //Vytvoření XML Souboru
@@ -163,7 +174,7 @@ namespace ProjektHoldaJan
         }
         /********************************************************/
         /********************************************************/
-        //NAKUP() = Metoda pro Nakupování, metoda má argumenty položek
+        //NAKUP() = Metoda pro Nakupování, metoda má argumenty tříd
         static void Nakup(Jablko jablko, Maslo maslo, Kureci kureci, Mydlo mydlo, Kartacek kartacek)
         {
 
@@ -294,6 +305,7 @@ namespace ProjektHoldaJan
         /********************************************************/
         /********************************************************/
         //Tisk() = Metoda pro Tisk účtenky
+        //Pokuď uživatel nemá v košíku nic, účtenku nemůže vytisknout 
         static void Tisk(Jablko jablko, Maslo maslo, Kureci kureci, Mydlo mydlo, Kartacek kartacek)
         {
             Console.Clear();
@@ -326,9 +338,14 @@ namespace ProjektHoldaJan
                         string path = @"c:/temp/Uctenka.txt";
                         if(kontrola > 0)
                         {
-                        if(!File.Exists(path))
-                        {
-                            using (StreamWriter sw = new StreamWriter(path))
+                            if (File.Exists(path))
+                            {
+                                File.Delete(path);
+                            }
+                            
+                            if (!File.Exists(path))
+                            {
+                            using (StreamWriter sw =File.CreateText(path))
                             {
                                 for (int i = 0; i < 25; i++)
                                 {
@@ -356,7 +373,7 @@ namespace ProjektHoldaJan
                                 if (maslo.mnozstvi > 0)
                                 {
                                     int mc = maslo.cena * maslo.mnozstvi;
-                                    sw.WriteLine("MASLO - 10Kč: ");
+                                    sw.WriteLine("MASLO - 50Kč: ");
                                     sw.WriteLine("počet:" + maslo.mnozstvi);
                                     sw.WriteLine("cena bez dph:" + mc / 1.21 + "Kč");
                                     sw.WriteLine("CENA CELKEM:" + mc + "Kč");
@@ -364,7 +381,7 @@ namespace ProjektHoldaJan
                                 if (kureci.mnozstvi > 0)
                                 {
                                     int kc = kureci.cena * kureci.mnozstvi;
-                                    sw.WriteLine("KUŘECÍ PRSA - 10Kč: ");
+                                    sw.WriteLine("KUŘECÍ PRSA - 110Kč: ");
                                     sw.WriteLine("počet:" + kureci.mnozstvi);
                                     sw.WriteLine("cena bez dph:" + kc / 1.21 + "Kč");
                                     sw.WriteLine("CENA CELKEM:" + kc + "Kč");
@@ -372,7 +389,7 @@ namespace ProjektHoldaJan
                                 if (mydlo.mnozstvi > 0)
                                 {
                                     int myc = mydlo.cena * mydlo.mnozstvi;
-                                    sw.WriteLine("MÝDLO - 10Kč: ");
+                                    sw.WriteLine("MÝDLO - 30Kč: ");
                                     sw.WriteLine("počet:" + mydlo.mnozstvi);
                                     sw.WriteLine("cena bez dph:" + myc / 1.21 + "Kč");
                                     sw.WriteLine("CENA CELKEM:" + myc + "Kč");
@@ -380,7 +397,7 @@ namespace ProjektHoldaJan
                                 if (kartacek.mnozstvi > 0)
                                 {
                                     int kac = kartacek.cena * kartacek.mnozstvi;
-                                    sw.WriteLine("KARTÁČEK - 10Kč: ");
+                                    sw.WriteLine("KARTÁČEK - 60Kč: ");
                                     sw.WriteLine("počet:" + kartacek.mnozstvi);
                                     sw.WriteLine("cena bez dph:" + kac / 1.21 + "Kč");
                                     sw.WriteLine("CENA CELKEM:" + kac + "Kč");
